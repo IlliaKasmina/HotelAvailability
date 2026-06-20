@@ -6,9 +6,7 @@ namespace HotelAvailability.Tests;
 public sealed class ListHotelsMappingTests
 {
     private static IReadOnlyList<Hotel> SampleHotels(int count) =>
-        Enumerable.Range(1, count)
-            .Select(i => new Hotel(new HotelId(Guid.NewGuid()), $"Hotel {i:D2}", "City", "Country", 3))
-            .ToList();
+        [.. Enumerable.Range(1, count).Select(i => new Hotel(new HotelId(Guid.NewGuid()), $"Hotel {i:D2}", "City", "Country", 3))];
 
     [Fact]
     public void First_page_returns_first_page_size_items()
@@ -47,6 +45,18 @@ public sealed class ListHotelsMappingTests
         Assert.Empty(response.Items);
         Assert.Equal(5, response.TotalCount);
         Assert.Equal(1, response.TotalPages);
+    }
+
+    [Fact]
+    public void Very_large_page_returns_empty_items_without_overflow()
+    {
+        var hotels = SampleHotels(8);
+
+        // (page - 1) * pageSize would overflow int and make Skip negative if computed as int.
+        var response = ListHotelsMapping.BuildResponse(hotels, page: int.MaxValue, pageSize: 100);
+
+        Assert.Empty(response.Items);
+        Assert.Equal(8, response.TotalCount);
     }
 
     [Fact]

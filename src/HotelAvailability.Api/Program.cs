@@ -4,6 +4,7 @@ using HotelAvailability.Api.Common.ErrorHandling;
 using HotelAvailability.Api.Data;
 using HotelAvailability.Api.Features.Availability.Search;
 using HotelAvailability.Api.Features.Bookings.Create;
+using HotelAvailability.Api.Features.Hotels.List;
 using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,8 +12,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddProblemDetails();
 
-// Mock provider is stateless and thread-safe, so a singleton is appropriate.
+// Mock providers are stateless and thread-safe, so singletons are appropriate.
 builder.Services.AddSingleton<IAvailabilityRepository, InMemoryAvailabilityRepository>();
+builder.Services.AddSingleton<IHotelRepository, InMemoryHotelRepository>();
 
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
@@ -75,6 +77,10 @@ api.MapGroup("/availability")
 api.MapGroup("/bookings")
     .WithTags("Bookings")
     .MapCreateBooking();
+
+api.MapGroup("/hotels")
+    .WithTags("Hotels")
+    .MapListHotels();
 
 app.Run();
 
