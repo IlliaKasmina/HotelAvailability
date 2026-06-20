@@ -6,4 +6,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Allow the test project to exercise internal helpers (e.g. ListHotelsMapping). -->
+    <InternalsVisibleTo Include="HotelAvailability.Tests" />
+  </ItemGroup>
+
 </Project>

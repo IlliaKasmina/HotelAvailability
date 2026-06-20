@@ -10,11 +10,10 @@ internal static class ListHotelsMapping
         var totalCount = hotels.Count;
         var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
 
-        var items = hotels
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .Select(ToDto)
-            .ToList();
+        var skip = (long)(page - 1) * pageSize;
+        IReadOnlyList<HotelDto> items = skip >= totalCount
+            ? []
+            : hotels.Skip((int)skip).Take(pageSize).Select(ToDto).ToList();
 
         return new HotelsResponse(page, pageSize, totalCount, totalPages, items);
     }
