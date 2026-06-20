@@ -4,6 +4,12 @@ A small, vertical-slice REST API on **.NET 10** that searches hotel room availab
 (stubbed) booking endpoint. Built with Minimal APIs, FluentValidation, ProblemDetails error
 handling, API-key authentication and Swagger.
 
+## Live API
+
+Deployed at: **https://app-hotel-availability.azurewebsites.net/**
+
+Swagger UI: https://app-hotel-availability.azurewebsites.net/swagger
+
 ## API Key
 
 This is a test-assignment app, so the API key is shared here for convenience:
@@ -44,8 +50,9 @@ mapping and handler in one folder. Cross-cutting concerns shared by every slice 
 dotnet run --project src/HotelAvailability.Api
 ```
 
-In `Development` the Swagger UI is served at `https://localhost:<port>/swagger`. Click
-**Authorize** and paste the API key to try the secured endpoints from the browser.
+The Swagger UI is served at `https://localhost:<port>/swagger` (in every environment, including the
+deployed Release build). Click **Authorize** and paste the API key to try the secured endpoints from
+the browser.
 
 ## API key
 
